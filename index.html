@@ -188,7 +188,61 @@
         @media (max-width: 500px) {
             .cell.x::before,
             .cell.o::before {
-                transform: translate(-50%, -50%) scale(0.7);
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                min-height: 100vh;
+                min-height: 100svh;
+                align-items: flex-start;
+                padding: 16px 12px;
+            }
+
+            .game-layout {
+                width: min(100%, 470px);
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .retro-window,
+            .sidebar {
+                width: 100%;
+            }
+
+            .game {
+                padding: 14px 12px 12px;
+            }
+
+            .sidebar {
+                padding: 8px;
+            }
+
+            .sidebar-box {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 8px;
+                margin-bottom: 0;
+                padding: 8px;
+            }
+
+            .sidebar-box h3 {
+                grid-column: 1 / -1;
+                margin-bottom: 0;
+                text-align: center;
+            }
+
+            .score-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+                margin: 0;
+            }
+
+            .score-row span:last-child {
+                min-width: 0;
+                text-align: center;
             }
         }
 
