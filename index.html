@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <style>
+        :root {
+            --retro-bg: #c0c0c0;
+            --panel-face: #d4d0c8;
+            --panel-dark: #808080;
+            --panel-light: #ffffff;
+            --panel-shadow: #404040;
+            --text: #111111;
+            --x: #0000ff;
+            --o: #ff0000;
+            --button-active: #bdbdbd;
+            --button-hover: #e5e5e5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #b7b7b7;
+            font-family: "Tahoma", "Verdana", sans-serif;
+            color: var(--text);
+        }
+
+        .game-layout {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .retro-window {
+            width: min(90vw, 470px);
+            background: var(--retro-bg);
+            border: 3px solid;
+            border-color: var(--panel-light) var(--panel-shadow) var(--panel-shadow) var(--panel-light);
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .title-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(to right, #000080, #1084d0);
+            color: white;
+            padding: 4px 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            user-select: none;
+        }
+
+        .title-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .game {
+            padding: 18px 18px 16px;
+            background: var(--panel-face);
+            border: 3px solid;
+            border-color: var(--panel-light) var(--panel-shadow) var(--panel-shadow) var(--panel-light);
+        }
+
+        .sidebar {
+            width: 190px;
+            background: var(--panel-face);
+            border: 3px solid;
+            border-color: var(--panel-light) var(--panel-shadow) var(--panel-shadow) var(--panel-light);
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+            padding: 10px;
+        }
+
+        .sidebar-box {
+            background: #ece9e3;
+            border: 2px solid;
+            border-color: var(--panel-shadow) var(--panel-light) var(--panel-light) var(--panel-shadow);
+            padding: 8px 10px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-box h3 {
+            margin: 0 0 8px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin: 4px 0;
+        }
+
+        .score-row span:last-child {
+            min-width: 22px;
+            text-align: right;
+        }
+
+        .status {
+            min-height: 28px;
+            margin-bottom: 16px;
+            padding: 8px 10px;
+            background: #ece9e3;
+            border: 2px solid;
+            border-color: var(--panel-shadow) var(--panel-light) var(--panel-light) var(--panel-shadow);
+            font-weight: bold;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+            background: #b8b8b8;
+            padding: 8px;
+            border: 3px solid;
+            border-color: var(--panel-shadow) var(--panel-light) var(--panel-light) var(--panel-shadow);
+        }
+
+        .cell {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--panel-face);
+            border: 3px solid #000000;
+            cursor: pointer;
+            transition: background 0.1s ease, transform 0.08s ease;
+            box-shadow: inset 1px 1px 0 rgba(255,255,255,0.7), inset -1px -1px 0 rgba(0,0,0,0.3);
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+            font-size: 0;
+        }
+
+        .cell:hover:not(:disabled) {
+            background: var(--button-hover);
+        }
+
+        .cell:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        .cell:disabled {
+            cursor: default;
+        }
+
+        .cell.x::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 68%;
+            height: 68%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cpath d='M4 4L30 30M30 4L4 30' fill='none' stroke='%23d50000' stroke-width='3' stroke-linecap='square' shape-rendering='crispEdges'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+            image-rendering: pixelated;
+            transform: translate(-50%, -50%);
+        }
+
+        .cell.x::after {
+            content: none;
+        }
+
+        .cell.o::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 68%;
+            height: 68%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Ccircle cx='17' cy='17' r='13' fill='none' stroke='%230d4fcf' stroke-width='3' shape-rendering='crispEdges'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+            image-rendering: pixelated;
+            transform: translate(-50%, -50%);
+        }
+
+        @media (max-width: 500px) {
+            .cell.x::before,
+            .cell.o::before {
+                transform: translate(-50%, -50%) scale(0.7);
+            }
+        }
+
+        .restart {
+            width: 100%;
+            padding: 10px 16px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text);
+            background: var(--panel-face);
+            border: 3px solid;
+            border-color: var(--panel-light) var(--panel-shadow) var(--panel-shadow) var(--panel-light);
+            cursor: pointer;
+            font-family: "Tahoma", "Verdana", sans-serif;
+        }
+
+        .restart:hover {
+            background: var(--button-hover);
+        }
+
+        .restart:active {
+            border-color: var(--panel-shadow) var(--panel-light) var(--panel-light) var(--panel-shadow);
+            background: var(--button-active);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-layout">
+        <div class="retro-window">
+            <div class="title-bar">
+                <div class="title-left">
+                    Tic Tac Toe
+                </div>
+            </div>
+
+            <div class="game">
+                <div id="status" class="status">Turno de X</div>
+                <div class="board" id="board">
+                    <button class="cell" data-index="0" aria-label="Casilla 1"></button>
+                    <button class="cell" data-index="1" aria-label="Casilla 2"></button>
+                    <button class="cell" data-index="2" aria-label="Casilla 3"></button>
+                    <button class="cell" data-index="3" aria-label="Casilla 4"></button>
+                    <button class="cell" data-index="4" aria-label="Casilla 5"></button>
+                    <button class="cell" data-index="5" aria-label="Casilla 6"></button>
+                    <button class="cell" data-index="6" aria-label="Casilla 7"></button>
+                    <button class="cell" data-index="7" aria-label="Casilla 8"></button>
+                    <button class="cell" data-index="8" aria-label="Casilla 9"></button>
+                </div>
+                <button id="restart" class="restart">Reiniciar</button>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <div class="sidebar-box">
+                <h3>Marcador</h3>
+                <div class="score-row"><span>X</span><span id="score-x">0</span></div>
+                <div class="score-row"><span>O</span><span id="score-o">0</span></div>
+                <div class="score-row"><span>Empates</span><span id="score-draws">0</span></div>
+            </div>
+
+        </aside>
+    </div>
+
+    <script src="juego.js"></script>
+</body>
+</html>
