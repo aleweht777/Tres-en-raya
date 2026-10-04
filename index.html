@@ -196,14 +196,14 @@
             body {
                 min-height: 100vh;
                 min-height: 100svh;
-                align-items: flex-start;
-                padding: 16px 12px;
+                align-items: center;
+                padding: 8px 12px;
             }
 
             .game-layout {
                 width: min(100%, 470px);
                 flex-direction: column;
-                gap: 12px;
+                gap: 8px;
             }
 
             .retro-window,
@@ -212,37 +212,55 @@
             }
 
             .game {
-                padding: 14px 12px 12px;
+                padding: 10px 12px;
             }
 
             .sidebar {
-                padding: 8px;
+                padding: 6px;
             }
 
             .sidebar-box {
                 display: grid;
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 8px;
+                grid-template-columns: repeat(3, max-content);
+                justify-content: center;
+                align-items: center;
+                column-gap: 16px;
+                row-gap: 4px;
                 margin-bottom: 0;
-                padding: 8px;
+                padding: 6px 8px;
             }
 
             .sidebar-box h3 {
                 grid-column: 1 / -1;
-                margin-bottom: 0;
+                justify-self: center;
+                width: 100%;
+                margin: 0 0 4px;
                 text-align: center;
             }
 
             .score-row {
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
-                gap: 2px;
+                justify-content: center;
+                gap: 6px;
                 margin: 0;
             }
 
             .score-row span:last-child {
                 min-width: 0;
                 text-align: center;
+            }
+
+            .status {
+                margin-bottom: 10px;
+                padding: 6px 10px;
+            }
+
+            .board {
+                width: min(100%, 48svh);
+                margin: 0 auto 10px;
+                gap: 6px;
+                padding: 6px;
             }
         }
 
